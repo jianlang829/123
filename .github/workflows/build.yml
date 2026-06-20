@@ -1,0 +1,43 @@
+name: Build and Package
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      # 拉取代码
+      - uses: actions/checkout@v4
+
+      # 编译C程序
+      - name: Compile C program
+        run: |
+          gcc -o hello hello.c
+
+      # 创建deb包目录结构
+      - name: Prepare deb package
+        run: |
+          mkdir -p hello-deb/DEBIAN
+          mkdir -p hello-deb/usr/local/bin
+          cp hello hello-deb/usr/local/bin/
+          echo "Package: hello" > hello-deb/DEBIAN/control
+          echo "Version: 1.0" >> hello-deb/DEBIAN/control
+          echo "Section: utils" >> hello-deb/DEBIAN/control
+          echo "Priority: optional" >> hello-deb/DEBIAN/control
+          echo "Architecture: amd64" >> hello-deb/DEBIAN/control
+          echo "Maintainer: Your Name <email@example.com>" >> hello-deb/DEBIAN/control
+          echo "Description: A simple Hello World program" >> hello-deb/DEBIAN/control
+
+      # 打包成deb
+      - name: Build deb package
+        run: |
+          dpkg-deb --build hello-deb hello_1.0_amd64.deb
+
+      # 上传作为工件，供下载
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hello-deb
+          path: hello_1.0_amd64.deb
