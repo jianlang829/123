@@ -34,10 +34,14 @@ jobs:
       # 打包成deb
       - name: Build deb package
         run: |
-          dpkg-deb --build hello-deb hello_1.0_amd64.deb
+          dpkg-deb --build hello-deb hello_amd64.deb
 
-      # 上传作为工件，供下载
-      - uses: actions/upload-artifact@v4
+      # 创建 Release 并上传 deb 包
+      - name: Create Release 
+        uses: softprops/action-gh-release@v1
         with:
-          name: hello-deb
-          path: hello_1.0_amd64.deb
+          tag_name: v1.0.0
+          name: "Build "
+          files: hello_amd64.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
