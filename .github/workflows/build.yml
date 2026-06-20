@@ -35,12 +35,16 @@ jobs:
       - name: Build deb package
         run: |
           dpkg-deb --build hello-deb hello_amd64.deb
+          
+      # Set tag name
+      - name: Set tag name
+        run: echo "TAG_NAME=v$(date +'%Y%m%d-%H%M')" >> $GITHUB_ENV
 
       # 创建 Release 并上传 deb 包
       - name: Create Release 
         uses: softprops/action-gh-release@v1
         with:
-          tag_name: v1.0.0
+          tag_name: ${{ env.TAG_NAME }}
           name: "Build "
           files: hello_amd64.deb
         env:
