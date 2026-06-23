@@ -56,7 +56,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            java.exclude("com/github/**")
+            java.setSrcDirs(listOf("src/main/java/com/zhihu"))
         }
     }
 }
