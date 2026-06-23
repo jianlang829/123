@@ -6,6 +6,7 @@ plugins {
     id("kotlin-parcelize")
 }
 
+@Suppress("DEPRECATION")
 android {
     namespace = "com.zhihu"
     compileSdk = 37
@@ -56,7 +57,7 @@ android {
 
     sourceSets {
         getByName("main") {
-            java.include("com/zhihu/**")
+            java.setSrcDirs(listOf("src/main/java/com/zhihu"))
         }
     }
 }
