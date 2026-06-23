@@ -53,6 +53,12 @@ android {
             )
         }
     }
+
+    sourceSets {
+        getByName("main") {
+            java.include("com/zhihu/**")
+        }
+    }
 }
 
 dependencies {
