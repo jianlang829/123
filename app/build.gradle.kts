@@ -53,6 +53,12 @@ android {
             )
         }
     }
+
+    sourceSets {
+        getByName("main") {
+            java.exclude("com/github/**")
+        }
+    }
 }
 
 dependencies {
